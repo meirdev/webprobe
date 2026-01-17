@@ -316,7 +316,7 @@ async function probe({
 
     await page.waitForTimeout(delay);
 
-    const unvisited = [...links].filter((link) => !visits.has(link));
+    const unvisited = [...links.difference(visits)];
     if (unvisited.length === 0) {
       console.log(chalk.yellow("No unvisited pages remaining"));
       break;
