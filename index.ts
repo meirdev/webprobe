@@ -182,7 +182,7 @@ async function saveReport({
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-semibold text-gray-700 mb-3">Domains Contacted (${domains.size})</h2>
+      <h2 class="text-xl font-semibold text-gray-700 mb-3">Domains (${domains.size})</h2>
       <ul class="bg-white rounded-lg shadow divide-y divide-gray-100">
         ${[...domains]
           .sort()
