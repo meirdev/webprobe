@@ -279,39 +279,39 @@ async function probe({
       .goto(nextUrl, { waitUntil: "networkidle", timeout: networkTimeout })
       .catch(() => {});
 
-    if (response) {
-      const title = await page.title();
+    const title = await page.title();
 
+    if (human) {
+      await humanBehavior(page);
+    }
+
+    const anchors = await page.locator("a[href]").all();
+
+    for (const anchor of anchors) {
+      const href = await anchor.getAttribute("href");
+      if (href) {
+        try {
+          const absoluteUrl = new URL(href, url);
+          absoluteUrl.hash = "";
+          if (
+            domain.some((d) => micromatch.isMatch(absoluteUrl.hostname, d)) &&
+            !shouldSkipUrl(absoluteUrl.href)
+          ) {
+            links.add(absoluteUrl.href);
+          }
+        } catch {}
+      }
+    }
+
+    if (response) {
       const status = response.status();
       const statusText = response.ok()
         ? chalk.green(status)
         : chalk.red(status);
 
       console.log(chalk.gray(`Title: ${title}`, statusText));
-
-      if (human) {
-        await humanBehavior(page);
-      }
-
-      const anchors = await page.locator("a[href]").all();
-
-      for (const anchor of anchors) {
-        const href = await anchor.getAttribute("href");
-        if (href) {
-          try {
-            const absoluteUrl = new URL(href, url);
-            absoluteUrl.hash = "";
-            if (
-              domain.some((d) => micromatch.isMatch(absoluteUrl.hostname, d)) &&
-              !shouldSkipUrl(absoluteUrl.href)
-            ) {
-              links.add(absoluteUrl.href);
-            }
-          } catch {}
-        }
-      }
     } else {
-      console.error(chalk.red(`Failed to load: ${nextUrl}`));
+      console.error(chalk.gray(`Title: ${title}`), chalk.red("timeout"));
     }
 
     await page.waitForTimeout(delay);
