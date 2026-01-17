@@ -170,14 +170,26 @@ async function saveReport({
     <section class="mb-8">
       <h2 class="text-xl font-semibold text-gray-700 mb-3">Visited Pages (${visits.size})</h2>
       <ul class="bg-white rounded-lg shadow divide-y divide-gray-100">
-        ${[...visits].map((v) => `<li class="px-4 py-3"><a href="${v}" class="text-blue-600 hover:underline break-all">${decodeURIComponent(v)}</a></li>`).join("\n        ")}
+        ${[...visits]
+          .sort()
+          .map(
+            (v) =>
+              `<li class="px-4 py-3"><a href="${v}" class="text-blue-600 hover:underline break-all">${decodeURIComponent(v)}</a></li>`,
+          )
+          .join("\n")}
       </ul>
     </section>
 
     <section class="mb-8">
       <h2 class="text-xl font-semibold text-gray-700 mb-3">All Links Found (${links.size})</h2>
       <ul class="bg-white rounded-lg shadow divide-y divide-gray-100">
-        ${[...links].map((l) => `<li class="px-4 py-3"><a href="${l}" class="text-blue-600 hover:underline break-all">${decodeURIComponent(l)}</a></li>`).join("\n        ")}
+        ${[...links]
+          .sort()
+          .map(
+            (l) =>
+              `<li class="px-4 py-3"><a href="${l}" class="text-blue-600 hover:underline break-all">${decodeURIComponent(l)}</a></li>`,
+          )
+          .join("\n")}
       </ul>
     </section>
 
