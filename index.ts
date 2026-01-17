@@ -256,14 +256,14 @@ async function probe({
       const requestUrl = new URL(response.url());
       domains.add(requestUrl.hostname);
 
-      if (domain.includes(requestUrl.hostname)) {
-        const status = response.status();
-        requests.set(response.url(), status);
+      const status = response.status();
+      const statusText = response.ok()
+        ? chalk.green(status)
+        : chalk.red(status);
+      console.log(`Request: ${response.url()}`, statusText);
 
-        const statusText = response.ok()
-          ? chalk.green(status)
-          : chalk.red(status);
-        console.log(`Request: ${response.url()}`, statusText);
+      if (domain.includes(requestUrl.hostname)) {
+        requests.set(response.url(), status);
       }
     } catch {}
   });
