@@ -279,7 +279,7 @@ async function probe({
       .goto(nextUrl, { waitUntil: "networkidle", timeout: networkTimeout })
       .catch(() => {});
 
-    const title = await page.title();
+    const title = await page.title().catch(() => "");
 
     if (human) {
       await humanBehavior(page);
