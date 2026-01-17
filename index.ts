@@ -309,7 +309,7 @@ async function probe({
         ? chalk.green(status)
         : chalk.red(status);
 
-      console.log(chalk.gray(`Title: ${title}`, statusText));
+      console.log(chalk.gray(`Title: ${title}`), statusText);
     } else {
       console.error(chalk.gray(`Title: ${title}`), chalk.red("timeout"));
     }
