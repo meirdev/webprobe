@@ -156,7 +156,10 @@ async function saveReport({
           </thead>
           <tbody class="divide-y divide-gray-100">
             ${[...requests.entries()]
-              .sort(([, a], [, b]) => b - a)
+              .sort(
+                ([urlA, statusA], [urlB, statusB]) =>
+                  statusB - statusA || urlA.localeCompare(urlB),
+              )
               .map(
                 ([reqUrl, status]) =>
                   `<tr class="hover:bg-gray-50"><td class="px-4 py-3 text-sm"><a href="${reqUrl}" class="text-blue-600 hover:underline break-all">${decodeURIComponent(reqUrl)}</a></td><td class="px-4 py-3 text-sm"><span class="px-2 py-1 rounded text-xs font-medium ${status < 400 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}">${status}</span></td></tr>`,
