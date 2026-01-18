@@ -277,7 +277,7 @@ async function probe({
         : chalk.red(status);
       console.log(`Request: ${response.url()}`, statusText);
 
-      if (domain.includes(requestUrl.hostname)) {
+      if (domain.some((d) => micromatch.isMatch(requestUrl.hostname, d))) {
         requests.set(response.url(), status);
       }
     } catch {}
@@ -416,7 +416,7 @@ async function main() {
       const domains = argv.domain as string[] | undefined;
       if (domains) {
         for (const domain of domains) {
-          if (!isValidDomain(domain)) {
+          if (domain !== "*" && !isValidDomain(domain, { wildcard: true })) {
             throw new Error(`Invalid domain: ${domain}`);
           }
         }
